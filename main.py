@@ -1,12 +1,12 @@
 import disnake
 import os
 import json
-import asyncio
 import aiohttp
 from datetime import datetime, timedelta, time
 import zoneinfo
 from aiohttp import ClientTimeout
 from disnake.ext import tasks
+from disnake.ext import commands
 
 # ====================== НАСТРОЙКИ ======================
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
@@ -17,8 +17,12 @@ GROUP_INT = os.getenv("GROUP_INT")
 URL = f"https://tulsu.ru/schedule/queries/GetSchedule.php?search_field=GROUP_P&search_value={GROUP_INT}"
 CACHE_FILE = "/app/data/schedule_cache.json"
 # ======================================================
-
-bot = disnake.Bot(intents=disnake.Intents.default())
+intents = disnake.Intents.all()
+intents.message_content = True
+intents.members = True
+intents.voice_states = True
+intents.guilds = True
+bot = commands.Bot(intents=intents)
 
 
 def save_cache(data):
