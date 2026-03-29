@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  university-schedule-bot:
+    build: .
+    container_name: university-schedule-bot
+    restart: unless-stopped
+    # ports:
+    #   - "9010:9010"
+    networks:
+      - university-schedule-bot
+    environment:
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      CHANNEL_ID: ${CHANNEL_ID}
+      USER_ID: ${USER_ID}
+      GROUP_INT: ${GROUP_INT}
+    volumes:
+      - ./data:/app/data
+
+networks:
+  university-schedule-bot:
+    driver: bridge
