@@ -3,7 +3,7 @@ name: Deploy via Portainer Webhook
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
