@@ -216,7 +216,15 @@ async def daily_task():
 @bot.event
 async def on_ready():
     print(f"✅ Бот {bot.user} успешно запущен!")
-    daily_task.start()
+
+    if not daily_task.is_running():
+        daily_task.start()
+
+    tz = zoneinfo.ZoneInfo("Europe/Moscow")
+    now = datetime.now(tz)
+
+    if now.hour >= 6:
+        await send_daily()
 
 
 if __name__ == "__main__":
