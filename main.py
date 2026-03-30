@@ -70,13 +70,27 @@ def get_today_lessons(data):
 def get_lessons_range(data, start_date: str, end_date: str):
     if not data or not isinstance(data, list):
         return {}
+
     lessons_by_day = {}
+
+    start = datetime.strptime(start_date, "%d.%m.%Y")
+    end = datetime.strptime(end_date, "%d.%m.%Y")
+
     for lesson in data:
         date_z = lesson.get("DATE_Z")
-        if date_z and start_date <= date_z <= end_date:
+        if not date_z:
+            continue
+
+        try:
+            lesson_date = datetime.strptime(date_z, "%d.%m.%Y")
+        except:
+            continue
+
+        if start <= lesson_date <= end:
             if date_z not in lessons_by_day:
                 lessons_by_day[date_z] = []
             lessons_by_day[date_z].append(lesson)
+
     return lessons_by_day
 
 
