@@ -222,9 +222,21 @@ async def cmd_week_schedule(inter: disnake.ApplicationCommandInteraction):
 
 
 # ====================== ЕЖЕДНЕВНЫЙ ТАСК (6:00 МСК) ======================
-@tasks.loop(time=time(hour=6, minute=0, tzinfo=zoneinfo.ZoneInfo("Europe/Moscow")))
+last_sent_date = None
+
+@tasks.loop(minutes=2)
 async def daily_task():
-    await send_daily()
+    global last_sent_date
+
+    tz = zoneinfo.ZoneInfo("Europe/Moscow")
+    now = datetime.now(tz)
+    today = now.strftime("%d.%m.%Y")
+
+    if now.hour == 6:
+        if last_sent_date != today:
+            print("⏰ Sending daily schedule")
+            await send_daily()
+            last_sent_date = today
 
 
 @bot.event
